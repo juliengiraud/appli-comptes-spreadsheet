@@ -238,5 +238,4 @@ var VenteCube_f = function () {
     this.isVente = function (index) {
         return is(index, 'vente');
     }
-
 }

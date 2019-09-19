@@ -138,6 +138,21 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
+    this.getBlablacarMois = function (annee, mois) {
+        /**
+         * Description : Retourne la somme des montants Blablacar du mois correspondant
+         */
+        var total = 0, i = 0;
+        for (i; i < taille_colonne; i++) {
+            if (annee == this.donnees[i].annee && mois == this.donnees[i].mois) {
+                if (is(i, 'BlaBlaCar')) {
+                    total += this.donnees[i].montant;
+                }
+            }
+        }
+        return total.toFixed(2);
+    }
+
     this.getEntreeMois = function (annee, mois) {
         /**
          * Description : Retourne la somme des entrées du mois correspondant
@@ -265,7 +280,7 @@ var EntreeSortie_f = function () {
          */
         var anneeActuelle, i;
         for (i = 1; i < taille_colonne; i++) {
-            if (i == 1 || anneeActuelle != this.donnees[i].annee) {
+            if (i == 1 || this.donnees[i].annee && anneeActuelle != this.donnees[i].annee) {
                 anneeActuelle = this.donnees[i].annee;
                 annees.push(anneeActuelle);
             }
@@ -322,8 +337,14 @@ var EntreeSortie_f = function () {
          */
 
         // Déclaration des variables
-        var tab_affichage = [];
-        var tmp;
+        var tab_affichage = [], tab_bilan_total = [];
+        var tmp, _getTotalDuMois, _getBilanMois, _getBlablacarMois, _getBilanTotalMois;
+
+        // Récupération des valeurs utilisées plusieurs fois
+        _getBilanMois = this.getBilanMois(annee, mois);
+        _getTotalDuMois = this.getTotalDuMois(annee, mois);
+        _getBlablacarMois = this.getBlablacarMois(annee, mois);
+        _getBilanTotalMois = this.getBilanTotalMois(annee, mois);
 
         // Ajout du contenu à afficher...
 
@@ -331,32 +352,43 @@ var EntreeSortie_f = function () {
         tmp = "Bilan ";
         tmp += mois == "avril" || mois == "août" || mois == "octobre" ? "d'" : "de ";
         tmp += mois + " : "
-        tab_affichage.push(tmp + this.getBilanMois(annee, mois) + ' €');
+        tab_affichage.push(tmp + _getBilanMois + ' €');
 
         // En cas de remboursement(s) en attente(s)
-        if (this.getTotalDuMois(annee, mois) != 0) {
+        if (_getTotalDuMois != 0) {
             tab_affichage.push("Bilan perso du mois : " + this.getBilanPersoMois(annee, mois) + ' €');
         }
 
         tab_affichage.push("Entrées du mois : " + this.getEntreeMois(annee, mois) + ' €');
         tab_affichage.push("Sorties du mois : " + this.getSortieMois(annee, mois) + ' €');
 
+        // En cas de Blablacar
+        if (_getBlablacarMois != 0) {
+            tab_affichage.push("BlaBlaCar : " + _getBlablacarMois + ' €');
+        }
+
         // En cas de remboursement(s) en attente(s)
-        if (this.getTotalDuMois(annee, mois) != 0) {
-            tab_affichage.push("Ce mois on me doit : " + this.getTotalDuMois(annee, mois) + ' €');
+        if (_getTotalDuMois != 0) {
+            tab_affichage.push("Ce mois on me doit : " + _getTotalDuMois + ' €');
             tab_affichage.push("Remboursements en attente : " + this.getNbRemboursementMois(annee, mois));
         }
 
-        tab_affichage.push("Bilan total : " + this.getBilanTotalMois(annee, mois) + ' €');
+        tab_bilan_total.push("Bilan total : " + _getBilanTotalMois + ' €');
 
         // Mise à jour de la cellule de référence
         cellule_ref.setNombre(cellule_ref.getNombre() + 1)
 
         // Affichage du bilan mensuel
-        affichage(tab_affichage, cellule_ref, this.getBilanMois(annee, mois));
+        affichage(tab_affichage, cellule_ref, _getBilanMois);
 
         // Mise à jour de la cellule de référence
         cellule_ref.setNombre(cellule_ref.getNombre() + tab_affichage.length)
+
+        // Affichage du bilan total
+        affichage(tab_bilan_total, cellule_ref, _getBilanTotalMois);
+
+        // Mise à jour de la cellule de référence
+        cellule_ref.setNombre(cellule_ref.getNombre() + 1);
     }
 
 }

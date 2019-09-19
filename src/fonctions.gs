@@ -131,16 +131,19 @@ function getLigneToTab(index) {
      * @param {string} cell - String d'une cellule
      * @return {string[]} tab - Tableau de mots
      */
-    var cell = colonne[index];
-    var tab = cell.toString().split(' ');
-    var p1 = cell.indexOf('(');
-    if (p1 != -1) {
-        var p2 = cell.indexOf(')');
-        var debutTab = tab.splice(0, p1);
-        var finTab = tab.slice(p2 + 1)
-        tab = debutTab.concat(finTab);
+    var cell, split1, split1_partie1, split1_partie2, split2, split2_partie2, final;
+    cell = colonne[index][0];
+    final = "";
+    split1 = cell.split("(");
+    split1_partie1 = split1[0];
+    split1_partie2 = split1[1];
+    final += split1_partie1;
+    if (split1_partie2) {
+        split2 = split1_partie2.split(")");
+        split2_partie2 = split2[1];
     }
-    return tab;
+    if (split2_partie2) final += split2_partie2;
+    return final.split(" ");
 }
 
 function getMois(index) {

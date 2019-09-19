@@ -25,10 +25,8 @@ function Manger() {
     tab_affichage.push('Nombre de repas : ' + f.getNbRepas());
     tab_affichage.push('Budjet café : ' + f.getBudjetCafe() + ' €');
 
-    // Ajout des cellule où afficher le contenu
-    for (var i = 0; i < taille_colonne - tab_affichage.length; i += tab_affichage.length + 15) {
-        cellules_reference.push(new Cellule('B', 2 + i));
-    }
+    // Ajout de la cellule où afficher le contenu
+    cellules_reference.push(new Cellule('B', 2));
 
     // Affichage du contenu dans les cellules
     for (var i = 0; i < cellules_reference.length; i++) {

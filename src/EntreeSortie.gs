@@ -2,6 +2,7 @@ function EntreeSortie() {
 
     // Déclaration des variables
     var tab_affichage = [], cellules_reference = [];
+    var _getTotalDu, _getBilanTotal;
     var f = new EntreeSortie_f();
     var i = 0;
 
@@ -14,15 +15,19 @@ function EntreeSortie() {
     // init
     f.constructor();
 
+    // Récupération des valeurs utilisées plusieurs fois
+    _getTotalDu = f.getTotalDu();
+    _getBilanTotal = f.getBilanTotal();
+
     // Ajout du contenu à afficher
-    if (f.getTotalDu() != 0) {
-        tab_affichage.push('Bilan total : ' + f.getBilanTotal() + ' €');
+    if (_getTotalDu != 0) {
+        tab_affichage.push('Bilan total : ' + _getBilanTotal + ' €');
     }
     tab_affichage.push('Bilan perso : ' + f.getBilanPerso() + ' €');
     tab_affichage.push('Total des entrées : ' + f.getTotalEntree() + ' €');
     tab_affichage.push('Total des sorties : ' + f.getTotalSortie() + ' €');
-    tab_affichage.push('Total qu\'on me doit : ' + f.getTotalDu() + ' €');
-    if (f.getTotalDu() != 0) {
+    if (_getTotalDu != 0) {
+        tab_affichage.push('Total qu\'on me doit : ' + _getTotalDu + ' €');
         tab_affichage.push('Remboursements en attente : ' + f.getNbRemboursement());
     }
 
@@ -33,7 +38,7 @@ function EntreeSortie() {
 
     // Affichage des bilans finaux
     for (i = 0; i < cellules_reference.length; i++) {
-        affichage(tab_affichage, cellules_reference[i], f.getBilanTotal());
+        affichage(tab_affichage, cellules_reference[i], _getBilanTotal);
     }
 
     // Affichage des bilans mensuels

@@ -23,6 +23,7 @@ var Manger_f = function () {
             signe = is(i, 'manger') ? 1 : -1;
 
             this.donnees.push(new tr(izly, montant, officiel, repas, ru, signe));
+            console.log(colonne[i][0], officiel, ru);
         }
     }
 

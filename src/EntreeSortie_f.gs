@@ -1,18 +1,21 @@
-var EntreeSortie_f = function () {
-
-    this.donnees = [];
-
-    var es = function (an, moi, si, mon, remboursa, rembourse) {
+// Création d'une entrée-sortie
+class Es {
+    constructor(an, moi, si, mon, remboursa, rembourse, b) {
         this.annee = an;
         this.mois = moi;
         this.signe = si;
         this.montant = mon;
         this.remboursable = remboursa;
         this.rembourse = rembourse;
+        this.blablacar = b;
     }
+}
 
-    this.constructor = function () {
-        var i, annee, mois, signe, montant, remboursable, rembourse;
+class EntreeSortie_f {
+
+    constructor() {
+        this.donnees = [];
+        var i, annee, mois, signe, montant, remboursable, rembourse, blablacar;
         for (i = 0; i < taille_colonne; i++) {
             annee = lignes[i][3];
             mois = lignes[i][2];
@@ -20,12 +23,43 @@ var EntreeSortie_f = function () {
             montant = getMontant(i);
             remboursable = this.isRemboursable(i);
             rembourse = this.isRembourse(i);
+            blablacar = this.isBlaBlaCar(i);
 
-            this.donnees.push(new es(annee, mois, signe, montant, remboursable, rembourse));
+            this.donnees.push(new Es(annee, mois, signe, montant, remboursable, rembourse, blablacar));
         }
     }
 
-    this.afficherTousLesBilans = function () {
+    getDonnees(i) {
+        return this.donnees[i];
+    }
+
+    getAnnee(index) {
+        /**
+         * Retourne l'année de la cellule passée en paramètre
+         */
+        return lignes[index][3];
+    }
+
+    getJour(index) {
+        /**
+         * Retourne le jour de la cellule passée en paramètre
+         */
+        var jour = lignes[index][1];
+        if (jour == "1er") jour = "1";
+        if (jour.length == 1) jour = "0" + jour;
+        return jour;
+    }
+
+    getNumMois(index) {
+        /**
+         * Retourne le mois de la cellule passée en paramètre
+         */
+        var nummois = (mois.indexOf(lignes[index][2]) + 1) + "";
+        if (nummois.length == 1) nummois = "0" + nummois;
+        return nummois;
+    }
+
+    afficherTousLesBilans() {
         /**
          * Description : Lance l'affichage de tous les bilans mensuels pour chaque année
          */
@@ -41,7 +75,7 @@ var EntreeSortie_f = function () {
         }
     }
 
-    this.afficherAnneeColonne = function (cell, annee) {
+    afficherAnneeColonne(cell, annee) {
         /**
          * Description : Affiche l'année dont il est question en haut de la colonne
          */
@@ -53,7 +87,7 @@ var EntreeSortie_f = function () {
         sheet.getRange(cell.toString()).setFontWeight('bold');
     }
 
-    this.getBilanMois = function (annee, mois) {
+    getBilanMois(annee, mois) {
         /**
          * Description : Retourne le montant du bilan mensuel correspondant
          */
@@ -69,7 +103,7 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.getBilanPerso = function () {
+    getBilanPerso() {
         /**
          * Description : Retourne le bilan total actuel
          * en considérant que tout ce qui devait être remboursé l'a été
@@ -85,7 +119,7 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.getBilanPersoMois = function (annee, mois) {
+    getBilanPersoMois(annee, mois) {
         /**
          * Description : Retourne le montant du bilan mensuel correspondant
          * en considérant que tout ce qui devait être remboursé l'a été
@@ -103,7 +137,7 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.getBilanTotal = function () {
+    getBilanTotal() {
         /**
          * Description : Retourne le bilan total actuel
          */
@@ -117,7 +151,7 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.getBilanTotalMois = function (annee, mois) {
+    getBilanTotalMois(annee, mois) {
         /**
          * Description : Retourne le montant du bilan total à la fin du mois
          */
@@ -138,14 +172,14 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.getBlablacarMois = function (annee, mois) {
+    getBlablacarMois(annee, mois) {
         /**
          * Description : Retourne la somme des montants Blablacar du mois correspondant
          */
         var total = 0, i = 0;
         for (i; i < taille_colonne; i++) {
             if (annee == this.donnees[i].annee && mois == this.donnees[i].mois) {
-                if (is(i, 'BlaBlaCar')) {
+              if (is(i, 'BlaBlaCar')) {
                     total += this.donnees[i].montant;
                 }
             }
@@ -153,7 +187,7 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.getEntreeMois = function (annee, mois) {
+    getEntreeMois(annee, mois) {
         /**
          * Description : Retourne la somme des entrées du mois correspondant
          */
@@ -170,7 +204,7 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.getNbRemboursement = function () {
+    getNbRemboursement() {
         /**
          * Description : Retourne le nombre total de remboursements en attente
          */
@@ -183,7 +217,7 @@ var EntreeSortie_f = function () {
         return total;
     }
 
-    this.getNbRemboursementMois = function (annee, mois) {
+    getNbRemboursementMois(annee, mois) {
         /**
          * Description : Retourne le nombre de remboursements en attente pour le mois correspondant
          */
@@ -198,14 +232,14 @@ var EntreeSortie_f = function () {
         return total;
     }
 
-    this.getSigne = function (index) {
+    getSigne(index) {
         /**
          * Description : Retourne 1 si le montant de la cellule correspondante est une entrée, -1 sinon
          */
-        return is(index, 'entrée') ? 1 : -1;
+        return (is(index, 'entrée') || is(index, 'Entrée')) ? 1 : -1;
     }
 
-    this.getSortieMois = function (annee, mois) {
+    getSortieMois(annee, mois) {
         /**
          * Description : Retourne la somme des sorties du mois correspondant
          */
@@ -221,21 +255,21 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.getTotalDu = function () {
+    getTotalDu() {
         /**
          * Description : Retourne le montant total qu'on me doit
          */
         return (this.getBilanPerso() - this.getBilanTotal()).toFixed(2);
     }
 
-    this.getTotalDuMois = function (annee, mois) {
+    getTotalDuMois(annee, mois) {
         /**
          * Description : Retourne le montant qu'on me doit pour le mois correspondant
          */
         return (this.getBilanPersoMois(annee, mois) - this.getBilanMois(annee, mois)).toFixed(2);
     }
 
-    this.getTotalEntree = function () {
+    getTotalEntree() {
         /**
          * Description : Retourne la somme de toutes les entrées
          */
@@ -250,7 +284,7 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.getTotalSortie = function () {
+    getTotalSortie() {
         /**
          * Description : Retourne la somme de toutes les sorties
          */
@@ -265,15 +299,19 @@ var EntreeSortie_f = function () {
         return total.toFixed(2);
     }
 
-    this.isRemboursable = function (index) {
+    isRemboursable(index) {
         return (is(index, 'remboursable')) ? 0 : 1;
     }
 
-    this.isRembourse = function (index) {
+    isRembourse(index) {
         return (is(index, 'remboursé')) ? 0 : 1;
     }
 
-    this.remplirAnnees = function (annees) {
+    isBlaBlaCar(index) {
+        return (is(index, 'BlaBlaCar')) ? 0 : 1;
+    }
+
+    remplirAnnees(annees) {
         /**
          * Description : Liste les années des dates de la colonne A
          * et les ajoute au tableau passé en paramètre dans le même ordre
@@ -287,7 +325,7 @@ var EntreeSortie_f = function () {
         }
     }
 
-    this.remplirMois = function (annee, mois) {
+    remplirMois(annee, mois) {
         /**
          * Description : Liste les mois des dates de la colonne A
          * et les ajoute au tableau passé en paramètre dans le même ordre
@@ -303,7 +341,7 @@ var EntreeSortie_f = function () {
         }
     }
 
-    this.traitementAnnee = function (cellule_ref, annee) {
+    traitementAnnee(cellule_ref, annee) {
         /**
          * Description : Lance l'affichage de tous les bilans mensuels pour l'année passée en paramètre
          */
@@ -331,7 +369,7 @@ var EntreeSortie_f = function () {
         cellule_ref.setLettre(alphabet[(alphabet.indexOf(cellule_ref.getLettre()) + 2) % 26]);
     }
 
-    this.traitementMois = function (cellule_ref, annee, mois) {
+    traitementMois(cellule_ref, annee, mois) {
         /**
          * Description : Lance l'affichage du bilan mensuel pour le mois passée en paramètre
          */

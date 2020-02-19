@@ -3,7 +3,6 @@ function EntreeSortie() {
     // Déclaration des variables
     var tab_affichage = [], cellules_reference = [];
     var _getTotalDu, _getBilanTotal;
-    var f = new EntreeSortie_f();
     var i = 0;
 
     // Ajout de la date si c'est une nouvelle ligne
@@ -13,7 +12,7 @@ function EntreeSortie() {
     decallageCelluleA1();
 
     // init
-    f.constructor();
+    var f = new EntreeSortie_f();
 
     // Récupération des valeurs utilisées plusieurs fois
     _getTotalDu = f.getTotalDu();
@@ -43,5 +42,20 @@ function EntreeSortie() {
 
     // Affichage des bilans mensuels
     f.afficherTousLesBilans();
+
+    // TEMPORAIRE : COPIE BD
+    var cellule_bd, sql, id, date, montant, commentaire, remboursable, rembourse, blablacar;
+    for (i = 1; i < taille_colonne; i++) {
+        cellule_bd = new Cellule('J', i+1);
+        id = taille_colonne - i - 1;
+        date = f.getDonnees(i).annee + "-" + f.getNumMois(i) + "-" + f.getJour(i);
+        montant = f.getDonnees(i).montant * f.getDonnees(i).signe;
+        commentaire = getCommentaire(i).replace("'", "''");
+        remboursable = f.getDonnees(i).remboursable ? 0 : 1;
+        rembourse = f.getDonnees(i).rembourse ? 0 : 1;
+        blablacar = f.getDonnees(i).blablacar ? 0 : 1;
+        sql = "INSERT INTO comptes VALUES (" + id + ", '" + date + "', " + montant + ", '" + commentaire + "', " + remboursable + ", " + rembourse + ", " + blablacar + ");";
+        sheet.getRange(cellule_bd.toString()).setValue(sql);
+    }
 
 }

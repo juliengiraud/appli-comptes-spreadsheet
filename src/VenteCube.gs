@@ -3,7 +3,6 @@ function VenteCube() {
     // Déclarations générales
     var tab_affichage = [];
     var cellule_reference = new Cellule('B', 2);
-    var f = new VenteCube_f();
 
     // Ajout de la date si c'est une nouvelle ligne
     ajoutDate(false);
@@ -12,7 +11,7 @@ function VenteCube() {
     decallageCelluleA1();
 
     // init
-    f.constructor();
+    var f = new VenteCube_f();
 
     // Ajout du contenu à afficher
     tab_affichage.push('Bilan : ' + f.getBilan() + ' €');

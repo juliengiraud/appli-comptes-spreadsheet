@@ -97,13 +97,6 @@ function decallageCelluleA1() {
     lignes = remplirLignes();
 }
 
-function getAnnee(index) {
-    /**
-     * Retourne l'année de la cellule passée en paramètre
-     */
-    return lignes[index][3];
-}
-
 function getDate(bool) {
     /**
      * Retourne la date du jour selon que 'long' soit à 'true' ou à 'false'
@@ -144,6 +137,22 @@ function getLigneToTab(index) {
     }
     if (split2_partie2) final += split2_partie2;
     return final.split(" ");
+}
+
+function getCommentaire(index) {
+    /**
+     * Retourne le commentaire à partir d'un index
+     * @param {index} cell - Index d'une cellule
+     * @return {string} commentaire - Commentaire
+     */
+    var cell, ligne_en_deux, debut_commentaire, commentaire;
+    cell = colonne[index][0];
+    commentaire = "";
+    ligne_en_deux = cell.split("(");
+    debut_commentaire = ligne_en_deux[1];
+    if (debut_commentaire)
+        commentaire = debut_commentaire.split(")")[0];
+    return commentaire;
 }
 
 function getMois(index) {

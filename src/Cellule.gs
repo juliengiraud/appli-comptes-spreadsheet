@@ -1,30 +1,32 @@
-var Cellule = function (lettre, nombre) {
+class Cellule {
     /**
      * Cellule Spreadsheet
      * @constructor
      * @param {string} lettre - Lettre de la colonne de la cellule.
      * @param {int} nombre - Numéro de la ligne de la cellule.
      */
-    this.lettre = lettre;
-    this.nombre = nombre;
+    constructor(lettre, nombre) {
+        this.lettre = lettre;
+        this.nombre = nombre;
+    }
 
-    this.getLettre = function () {
+    getLettre() {
         return this.lettre;
     }
 
-    this.setLettre = function (newLettre) {
+    setLettre(newLettre) {
         this.lettre = newLettre;
     }
 
-    this.getNombre = function () {
+    getNombre() {
         return this.nombre;
     }
 
-    this.setNombre = function (newNombre) {
+    setNombre(newNombre) {
         this.nombre = newNombre;
     }
 
-    this.toString = function (nb) {
+    toString(nb) {
         /**
          * Affiche les coordonnées de la cellule de la ligne n + k
          * n le numéro originel de la ligne de la cellule

@@ -1,9 +1,6 @@
-var VenteCube_f = function () {
-
-    this.donnees = [];
-
-    // Création d'une transaction
-    var tr = function (at, ae, c, m, n, rn, ru, rt, ve, vu) {
+// Création d'une transaction
+class Transaction {
+    constructor(at, ae, c, m, n, rn, ru, rt, ve, vu) {
         this.achat = at;
         this.achete = ae;
         this.credit = c;
@@ -15,8 +12,12 @@ var VenteCube_f = function () {
         this.vente = ve;
         this.vieuxVendu = vu;
     }
+}
 
-    this.constructor = function () {
+class VenteCube_f {
+
+    constructor() {
+        this.donnees = [];
         var i, achat, achete, credit, montant, neufVendu, reception, recu, remboursement, vente, vieuxVendu;
         for (i = 0; i < taille_colonne; i++) {
             achat = this.isAchat(i);
@@ -36,18 +37,18 @@ var VenteCube_f = function () {
                 vieuxVendu = this.getNbVieuxVenduLigne(i);
             }
 
-            this.donnees.push(new tr(achat, achete, credit, montant, neufVendu, reception, recu, remboursement, vente, vieuxVendu));
+            this.donnees.push(new Transaction(achat, achete, credit, montant, neufVendu, reception, recu, remboursement, vente, vieuxVendu));
         }
     }
 
-    this.getBilan = function () {
+    getBilan() {
         /**
          * Description : Retourne le bilan globale du commerce
          */
         return (this.getCA() - this.getInvestissement()).toFixed(2);
     }
 
-    this.getCA = function () {
+    getCA() {
         /**
          * Description : Retourne le chiffre d'affaires du commerce
          */
@@ -60,7 +61,7 @@ var VenteCube_f = function () {
         return recu.toFixed(2);
     }
 
-    this.getInvestissement = function () {
+    getInvestissement() {
         /**
          * Description : Retourne l'investissement total du commerce
          */
@@ -73,7 +74,7 @@ var VenteCube_f = function () {
         return depense.toFixed(2);
     }
 
-    this.getNbAchete = function () {
+    getNbAchete() {
         /**
          * Description : Retourne le nombre total de cubes achetés
          */
@@ -86,7 +87,7 @@ var VenteCube_f = function () {
         return nb;
     }
 
-    this.getNbAcheteLigne = function (index) {
+    getNbAcheteLigne(index) {
         /**
          * Description : Retourne le nombre de cubes achetés de la cellule passée en paramètre
          */
@@ -94,7 +95,7 @@ var VenteCube_f = function () {
         return parseInt(tab[tab.indexOf(is(index, 'cube') ? 'cube' : 'cubes') - 1]);
     }
 
-    this.getNbCredit = function () {
+    getNbCredit() {
         /**
          * Description : Retourne le nombre de remboursements en attente
          */
@@ -110,7 +111,7 @@ var VenteCube_f = function () {
         return credit - remboursement;
     }
 
-    this.getNbNeufVendu = function () {
+    getNbNeufVendu() {
         /**
          * Description : Retourne le nombre total de cubes neufs vendus
          */
@@ -121,7 +122,7 @@ var VenteCube_f = function () {
         return nb;
     }
 
-    this.getNbNeufVenduLigne = function (index) {
+    getNbNeufVenduLigne(index) {
         /**
          * Description : Retourne le nombre de cubes neufs vendus de la cellule passée en paramètre
          */
@@ -130,7 +131,7 @@ var VenteCube_f = function () {
         return parseInt(tab[tab.indexOf(is(index, 'neuf') ? 'neuf' : 'neufs') - 2]);
     }
 
-    this.getNbRecu = function () {
+    getNbRecu() {
         /**
          * Description : Retourne le nombre total de cubes reçus
          */
@@ -143,7 +144,7 @@ var VenteCube_f = function () {
         return nb;
     }
 
-    this.getNbRecuLigne = function (index) {
+    getNbRecuLigne(index) {
         /**
          * Description : Retourne le nombre de cubes reçus de la cellule passée en paramètre
          */
@@ -152,14 +153,14 @@ var VenteCube_f = function () {
         return parseInt(tab[tab.indexOf(is(index, 'cube') ? 'cube' : 'cubes') - 1]);
     }
 
-    this.getNbVendu = function () {
+    getNbVendu() {
         /**
          * Description : Retourne le nombre total de cubes vendus
          */
         return this.getNbNeufVendu() + this.getNbVieuxVendu();
     }
 
-    this.getNbVieuxVendu = function () {
+    getNbVieuxVendu() {
         /**
          * Description : Retourne le nombre total de vieux cubes vendus
          */
@@ -172,7 +173,7 @@ var VenteCube_f = function () {
         return nb;
     }
 
-    this.getNbVieuxVenduLigne = function (index) {
+    getNbVieuxVenduLigne(index) {
         /**
          * Description : Retourne le nombre de vieux cubes vendus de la cellule passée en paramètre
          */
@@ -181,29 +182,29 @@ var VenteCube_f = function () {
         return parseInt(tab[tab.indexOf('vieux') - 1]);
     }
 
-    this.getReception = function () {
+    getReception() {
         /**
          * Description : Retourne le nombre total de cubes en attente de réception
          */
         return this.getNbAchete() - this.getNbRecu();
     }
 
-    this.getStock = function () {
+    getStock() {
         /**
          * Description : Retourne le nombre total de cubes en stock
          */
         return this.getNbAchete() - this.getNbNeufVendu() - this.getReception();
     }
 
-    this.getStockPotentiel = function () {
+    getStockPotentiel() {
         /**
-         * Description : Retourne le nombre total de cubes que le commerce aura en stock 
+         * Description : Retourne le nombre total de cubes que le commerce aura en stock
          * une fois qu'il aura réceptionné tous les cubes qu'il attend
          */
         return this.getStock() + this.getReception();
     }
 
-    this.getTotalCreance = function () {
+    getTotalCreance() {
         /**
          * Description : Retourne le total de la somme des remboursements que le commerce attend
          */
@@ -219,23 +220,23 @@ var VenteCube_f = function () {
         return (credit - remboursement).toFixed(2);
     }
 
-    this.isAchat = function (index) {
+    isAchat(index) {
         return is(index, 'achat');
     }
 
-    this.isCredit = function (index) {
+    isCredit(index) {
         return is(index, 'crédit');
     }
 
-    this.isReception = function (index) {
+    isReception(index) {
         return is(index, 'réception');
     }
 
-    this.isRemboursement = function (index) {
+    isRemboursement(index) {
         return is(index, 'remboursement');
     }
 
-    this.isVente = function (index) {
+    isVente(index) {
         return is(index, 'vente');
     }
 }
